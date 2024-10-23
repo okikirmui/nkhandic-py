@@ -15,6 +15,7 @@ setup(name='nkhandic',
       long_description=README,
       long_description_content_type="text/markdown",
       url="https://github.com/okikirmui/nkhandic-py",
+      license="MIT",
       packages=setuptools.find_packages(),
       classifiers=[
         "Programming Language :: Python :: 3",
