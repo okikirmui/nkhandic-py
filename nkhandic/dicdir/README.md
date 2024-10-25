@@ -1,14 +1,7 @@
-# UniDic 2.1.2
+# NK-HanDic
 
-Note the files included here are the unmodified files provided in the Unidic 2.1.2 binary distribution. 
+NK-HanDic is a dictionary for morphological analysis of North Korean languages with the morphological analysis engine MeCab. It consists of over 210,000 entries and was trained and built with data centered on written language, such as Rodong Sinmun and North Korean Korean language textbooks.
 
-They were originally acquired from this link:
+For more information, please refer to [NK-HanDic](https://github.com/okikirmui/nkhandic).
 
-    https://unidic.ninjal.ac.jp/back_number
-
-Specifically:
-
-    https://unidic.ninjal.ac.jp/unidic_archive/cwj/2.1.2/unidic-mecab-2.1.2_bin.zip
-
-Because they are large these files are not included in the git source for unidic-lite.
-
+NK-HanDic is copyright Yoshinori Sugai and distributed under the BSD-3-Clause license.
