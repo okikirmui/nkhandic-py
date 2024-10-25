@@ -1,0 +1,3 @@
+include nkhandic/dicdir/*.bin
+include nkhandic/dicdir/*.dic
+include nkhandic/dicdir/dicrc
