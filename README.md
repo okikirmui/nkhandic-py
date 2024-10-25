@@ -14,7 +14,9 @@ pip install nkhandic
 
 ## Usage
 
-Since NK-HanDic requires Hangul Jamo(Unicode Hangul Jamo) as input, please convert Hangul (Unicode Hangul Syllables) using modules such as `jamotools` or `tools/k2jamo.py` included in NK-HanDic.
+Since NK-HanDic requires Hangul Jamo(Unicode Hangul Jamo) as input, please convert Hangul (Unicode Hangul Syllables) using modules such as [jamotools](https://pypi.org/project/jamotools/), or `tools/k2jamo.py` script included in NK-HanDic.
+
+### basic
 
 example:
 
@@ -79,6 +81,73 @@ BOS/EOS,*,*,*,*,*,*,*,*,*,*
 . Symbol,ピリオド,*,*,*,.,.,*,*,*,SF
 BOS/EOS,*,*,*,*,*,*,*,*,*,*
 ```
+
+### Tokenize
+
+example:
+
+```Python
+mecaboption = f'-r /dev/null -d {nkhandic.DICDIR} -Otokenize'
+tokenizer = MeCab.Tagger(mecaboption)
+
+print(tokenizer.parse(jamo))
+```
+
+result:
+
+```Shell
+경애 하 는 총비서 동지 에 대하 ㄴ 절대 적 이 ㄴ 충성심 을 지니 고 당중앙 의 구상 과 결심 을 철저 하 ㄴ 실천 행동 으로 받들어 나가 야 하 ㄴ다 .
+```
+
+### Extracting specific POS
+
+example:
+
+```Python
+mecaboption = f'-r /dev/null -d {nkhandic.DICDIR}'
+
+tokenizer = MeCab.Tagger(mecaboption)
+tokenizer.parse('')
+
+node = tokenizer.parseToNode(jamo)
+while node:
+    # 일반명사(pos-tag: NNG)만 추출
+    if node.feature.split(',')[10] in ['NNG']:
+        print(node.feature.split(',')[5])
+    node = node.next
+```
+
+result:
+
+```Shell
+경애01
+총비서
+동지006
+절대05
+충성심
+당중앙001
+구상08
+결심01
+철저
+실천01
+행동
+```
+
+## Features
+
+Here is the list of features included in NK-HanDic. For more information, see the [NK-HanDic 품사 정보](https://github.com/okikirmui/nkhandic/blob/main/pos_detail.md).
+
+  - 품사1, 품사2, 품사3: part of speech(index: 0-2)
+  - 활용형: conjugation "base"(ex. `語基1`, `語基2`, `語基3`)(index: 3)
+  - 접속 정보: which "base" the ending is attached to(ex. `1接続`, `2接続`, etc.)(index: 4)
+  - 사전 항목: base forms(index: 5)
+  - 표층형: surface(index: 6)
+  - 한자: for sino-words(index: 7)
+  - 보충 정보: miscellaneous informations(index: 8)
+  - 학습 수준: learning level(index: 9)
+  - 세종계획 품사 태그: pos-tag(index: 10)
+  - 조선어 표시(optional): for North Korean words(index: 11)
+  - 뜻풀이(optional): for North Korean words(index: 12)
 
 ## License
 
