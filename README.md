@@ -83,3 +83,7 @@ BOS/EOS,*,*,*,*,*,*,*,*,*,*
 ## License
 
 This code is licensed under the MIT license. NK-HanDic is copyright Yoshinori Sugai and distributed under the [BSD license](./LICENSE.nkhandic). 
+
+## Acknowledgment
+
+This repository is forked from [unidic-lite](https://github.com/polm/unidic-lite) with some modifications and file additions and deletions.
