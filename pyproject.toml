@@ -12,7 +12,7 @@ authors = [
 ]
 description = "NK-HanDic package for installing via pip."
 readme = "README.md"
-license = {file = "LICENSE"}
+license = {text = "MIT License"}
 keywords = [
     "nkhandic", "MeCab", "North Korean Language", "morphological analysis", "morphological analysis dictionary", "korean text processing"
 ]
@@ -25,4 +25,4 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/okikirmui/nkhandic-py"
+Repository = "https://github.com/okikirmui/nkhandic-py"
