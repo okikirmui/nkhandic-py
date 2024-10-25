@@ -23,8 +23,7 @@ import MeCab
 import nkhandic
 import jamotools
 
-dic_path = nkhandic.__path__[0].replace('\\','/') + '/dicdir/'
-mecaboption = f'-r /dev/null -d {dic_path}'
+mecaboption = f'-r /dev/null -d {nkhandic.DICDIR}'
 
 tokenizer = MeCab.Tagger(mecaboption)
 tokenizer.parse('')
