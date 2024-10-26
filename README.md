@@ -1,5 +1,7 @@
 # nkhandic-py
 
+![PyPI - Version](https://img.shields.io/pypi/v/nkhandic)
+
 This is a package to install [NK-HanDic](https://github.com/okikirmui/nkhandic), a dictionary for morphological analysis of North Korean languages, via pip and use it in Python.
 
 To use this package for morphological analysis, the MeCab wrapper such as [mecab-python3](https://github.com/SamuraiT/mecab-python3) is required.
@@ -82,37 +84,16 @@ BOS/EOS,*,*,*,*,*,*,*,*,*,*
 BOS/EOS,*,*,*,*,*,*,*,*,*,*
 ```
 
-### Tokenize
-
-example:
-
-```Python
-mecaboption = f'-r /dev/null -d {nkhandic.DICDIR} -Otokenize'
-tokenizer = MeCab.Tagger(mecaboption)
-
-print(tokenizer.parse(jamo))
-```
-
-result:
-
-```Shell
-경애 하 는 총비서 동지 에 대하 ㄴ 절대 적 이 ㄴ 충성심 을 지니 고 당중앙 의 구상 과 결심 을 철저 하 ㄴ 실천 행동 으로 받들어 나가 야 하 ㄴ다 .
-```
-
 ### Extracting specific POS
 
 example:
 
 ```Python
-mecaboption = f'-r /dev/null -d {nkhandic.DICDIR}'
-
-tokenizer = MeCab.Tagger(mecaboption)
-tokenizer.parse('')
-
+# 일반명사(pos-tag: NNG)만 추출
 node = tokenizer.parseToNode(jamo)
 while node:
-    # 일반명사(pos-tag: NNG)만 추출
     if node.feature.split(',')[10] in ['NNG']:
+        # 사전 항목(base forms)을 출력
         print(node.feature.split(',')[5])
     node = node.next
 ```
@@ -131,6 +112,23 @@ result:
 철저
 실천01
 행동
+```
+
+### Tokenize
+
+example:
+
+```Python
+mecaboption = f'-r /dev/null -d {nkhandic.DICDIR} -Otokenize'
+tokenizer = MeCab.Tagger(mecaboption)
+
+print(tokenizer.parse(jamo))
+```
+
+result:
+
+```Shell
+경애 하 는 총비서 동지 에 대하 ㄴ 절대 적 이 ㄴ 충성심 을 지니 고 당중앙 의 구상 과 결심 을 철저 하 ㄴ 실천 행동 으로 받들어 나가 야 하 ㄴ다 .
 ```
 
 ## Features
