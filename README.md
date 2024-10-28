@@ -133,7 +133,7 @@ result:
 
 ## Features
 
-Here is the list of features included in NK-HanDic. For more information, see the [NK-HanDic 품사 정보](https://github.com/okikirmui/nkhandic/blob/main/pos_detail.md).
+Here is the list of features included in NK-HanDic. For more information, see the [NK-HanDic 품사 정보](https://github.com/okikirmui/nkhandic/blob/main/docs/pos_detail.md).
 
   - 품사1, 품사2, 품사3: part of speech(index: 0-2)
   - 활용형: conjugation "base"(ex. `語基1`, `語基2`, `語基3`)(index: 3)
