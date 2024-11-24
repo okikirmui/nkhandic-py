@@ -6,6 +6,8 @@ This is a package to install [NK-HanDic](https://github.com/okikirmui/nkhandic),
 
 To use this package for morphological analysis, the MeCab wrapper such as [mecab-python3](https://github.com/SamuraiT/mecab-python3) is required.
 
+**[notice]** After v.0.1.3, calendar versioning is used according to the dictionary version.
+
 ## Installation
 
 from PyPI:
