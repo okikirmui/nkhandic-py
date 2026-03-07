@@ -1,141 +1,263 @@
-# nkhandic-py
+# nkhandic-py — Python wrapper for the NK-HanDic MeCab dictionary
 
 ![PyPI - Version](https://img.shields.io/pypi/v/nkhandic)
 
-This is a package to install [NK-HanDic](https://github.com/okikirmui/nkhandic), a dictionary for morphological analysis of North Korean languages, via pip and use it in Python.
 
-To use this package for morphological analysis, the MeCab wrapper such as [mecab-python3](https://github.com/SamuraiT/mecab-python3) is required.
+👉 **NK-HanDic (dictionary) repository**: https://github.com/okikirmui/nkhandic
 
-**[notice]** After v.0.1.3, calendar versioning is used according to the dictionary version.
+`nkhandic` is a **Python helper package** that makes it easy to use **NK-HanDic**, a MeCab dictionary for North Korean, **from Python code**.
 
-## Installation
+> ⚠️ Important distinction  
+> - **NK-HanDic** = the MeCab dictionary itself (linguistic resource)  
+> - **nkhandic (this package)** = a Python interface / utility layer for HanDic  
+>  
+> The dictionary is developed and published separately;  
+> this package focuses on *Python usability*.
 
-from PyPI:
+If you need for a contemporary Korean, please check [HanDic](https://github.com/okikirmui/handic) (MeCab dictionary) and [handic](https://pypi.org/project/handic/) (Python wrapper).
 
-```Shell
-pip install nkhandic
+---
+
+# Overview
+
+`nkhandic` provides a convenient Python interface for the **NK-HanDic North Korean morphological analysis dictionary**.
+
+It allows researchers and developers to perform **North Korean morphological analysis from Python** without manually configuring dictionary paths or MeCab options.
+
+The package:
+
+- Bundles a snapshot of the NK-HanDic dictionary
+- Provides **high-level Python APIs**
+- Handles **Jamo-based input/output**
+- Supports **Hanja-aware representations**
+- Works across **Linux, macOS, and Windows environments**
+
+---
+
+## Relationship between NK-HanDic and this package
+
+```
+NK-HanDic (dictionary repository)
+        ↓
+   MeCab dictionary files
+        ↓
+  nkhandic (Python wrapper)
+        ↓
+  Your Python code
 ```
 
-## Usage
+- The **linguistic design and dictionary entries** live in the NK-HanDic repository
+- This package bundles a released snapshot of the dictionary **only to enable Python use**
+- Updates to dictionary content are driven by the NK-HanDic project
 
-Since NK-HanDic requires Hangul Jamo(Unicode Hangul Jamo) as input, please convert Hangul (Unicode Hangul Syllables) using modules such as [jamotools](https://pypi.org/project/jamotools/), or `tools/k2jamo.py` script included in NK-HanDic.
+---
 
-### basic
+## 🚀 Quick Start (Python)
 
-example:
+### Installation
 
-```Python
-import MeCab
+```bash
+pip install nkhandic mecab-python3 jamotools
+```
+
+### Minimal example
+
+```python
 import nkhandic
-import jamotools
 
-mecaboption = f'-r /dev/null -d {nkhandic.DICDIR}'
+text = "총비서동지께서 다음과 같이 말씀하시였다."
 
-tokenizer = MeCab.Tagger(mecaboption)
-tokenizer.parse('')
-
-# 로동신문 2024년 5월 1일자 사설
-sentence = u'경애하는 총비서동지에 대한 절대적인 충성심을 지니고 당중앙의 구상과 결심을 철저한 실천행동으로 받들어나가야 한다.'
-
-jamo = jamotools.split_syllables(sentence, jamo_type="JAMO")
-
-node = tokenizer.parseToNode(jamo)
-while node:
-    print(node.surface, node.feature)
-    node = node.next
+print(nkhandic.tokenize_hangul(text))
+print(nkhandic.pos_tag(text))
+print(nkhandic.convert_text_to_hanja_hangul(text))
 ```
 
-result:
-
-```Shell
-BOS/EOS,*,*,*,*,*,*,*,*,*,*
-경애 Noun,普通,*,*,*,경애01,경애,敬愛,*,*,NNG
-하 Suffix,動詞派生,*,語基1,*,하다02,하,*,*,*,XSV
-는 Ending,語尾,連体形,*,1接続,는03,는,*,*,*,ETM
-총비서 Noun,普通,*,*,*,총비서,총비서,總秘書,*,*,NNG
-동지 Noun,普通,*,*,*,동지006,동지,同志,*,*,NNG,&북한어,"이름 아래 쓰여 존경과 흠모의 정을 나타내는 말."
-에 Ending,助詞,処格,*,*,에04,에,*,*,*,JKB
-대하 Verb,自立,*,語基2,*,대하다02,대하,對하,*,B,VV
-ᆫ Ending,語尾,連体形,*,2接続,ㄴ05,ㄴ,*,*,*,ETM
-절대 Noun,普通,*,*,*,절대05,절대,絶對,*,C,NNG
-적 Suffix,名詞派生,*,*,*,적18,적,的,사상적,*,XSN
-이 Siteisi,非自立,*,語基2,*,이다,이,*,*,*,VCP
-ᆫ Ending,語尾,連体形,*,2接続,ㄴ05,ㄴ,*,*,*,ETM
-충성심 Noun,普通,*,*,*,충성심,충성심,忠誠心,*,*,NNG
-을 Ending,助詞,対格,*,*,을02,을,*,*,*,JKO
-지니 Verb,自立,*,語基1,*,지니다,지니,*,*,C,VV
-고 Ending,語尾,接続形,*,1接続,고25,고,*,*,*,EC
-당중앙 Noun,普通,*,*,*,당중앙001,당중앙,黨中央,*,*,NNG,&북한어,"북한에서, 당 대회와 당 대회 사이에 노동당의 노선과 정책을 세우고 그 집행을 조직하고 지도하는 최고 지도 기관."
-의 Ending,助詞,属格,*,*,의10,의,*,*,*,JKG
-구상 Noun,普通,動作,*,*,구상08,구상,構想,*,*,NNG
-과 Ending,助詞,接続助詞,*,*,과12,과,*,*,*,JC
-결심 Noun,普通,動作,*,*,결심01,결심,決心,*,C,NNG
-을 Ending,助詞,対格,*,*,을02,을,*,*,*,JKO
-철저 Noun,普通,状態,*,*,철저,철저,徹底,*,*,NNG
-하 Suffix,形容詞派生,*,語基2,*,하다02,하,*,*,*,XSA
-ᆫ Ending,語尾,連体形,*,2接続,ㄴ05,ㄴ,*,*,*,ETM
-실천 Noun,普通,動作,*,*,실천01,실천,實踐,*,C,NNG
-행동 Noun,普通,動作,*,*,행동,행동,行動,*,B,NNG
-으로 Ending,助詞,具格,*,*,으로,으로,*,*,*,JKB
-받들어 Verb,自立,ㄹ語幹,語基3,*,받들다,받들어,*,*,*,VV
-나가 Verb,非自立,*,語基3,3接続,나가다,나가,*,*,A,VX
-야 Ending,語尾,接続形,*,3接続,야80,야,*,"-아야/어야",*,EC
-하 Verb,非自立,*,語基2,*,하다01,하,*,*,A,VX
-ᆫ다 Ending,語尾,終止形,*,2接続,ㄴ다01,ㄴ다,*,*,*,EF
-. Symbol,ピリオド,*,*,*,.,.,*,*,*,SF
-BOS/EOS,*,*,*,*,*,*,*,*,*,*
+**Example output**
+```
+[('총비서', 'NNG'), ('동지006', 'NNG'), ('께서', 'JKS'), ('다음01', 'NNG'), ('과12', 'JKB'), ('같이', 'MAG'), ('말씀', 'NNG'), ('하다02', 'XSV'), ('시', 'EP'), ('ㅆ', 'EP'), ('다06', 'EF'), ('.', 'SF')]
+['총비서', '동지', '께서', '다음', '과', '같이', '말씀', '하', '시여', 'ㅆ', '다', '.']
+總秘書同志께서 다음과 같이 말씀하시였다.
 ```
 
-### Extracting specific POS
+---
+
+## High-level API (Python convenience layer)
+
+### `tokenize_hangul(text)`
+
+Return a list of tokens in Hangul base form(Unified Hangul Code).
+
+- Internally uses NK-HanDic via MeCab
+- Automatically restores Hangul syllables from Jamo
+- Robust against unknown words
+
+If you want to obtain tokens in surface form instead of base form, specify “surface” for the `mode` option.
 
 example:
 
-```Python
-# 일반명사(pos-tag: NNG)만 추출
-node = tokenizer.parseToNode(jamo)
-while node:
-    if node.feature.split(',')[10] in ['NNG']:
-        # 사전 항목(base forms)을 출력
-        print(node.feature.split(',')[5])
-    node = node.next
+```python
+text = "말씀하시였다."
+
+nkhandic.tokenize_hangul(text, mode="surface")
+# ['말씀', '하', '시여', 'ㅆ', '다', '.']
+
+nkhandic.tokenize_hangul(text)
+# ['말씀', '하다02', '시', 'ㅆ', '다06', '.']
 ```
 
-result:
+---
 
-```Shell
-경애01
-총비서
-동지006
-절대05
-충성심
-당중앙001
-구상08
-결심01
-철저
-실천01
-행동
+### `tokenize(text)`
+
+Return tokens in **Jamo surface form**.
+
+- Low-level wrapper around MeCab
+
+```python
+text = "어쩌면 그리도 위대하신가."
+
+nkhandic.tokenize(text)
+# ['어쩌면', '그리도', '위대', '하', '시', 'ᆫ가', '.']
 ```
 
-### Tokenize
+---
 
-example:
+### `pos(text)` — lightweight POS
 
-```Python
-mecaboption = f'-r /dev/null -d {nkhandic.DICDIR} -Otokenize'
-tokenizer = MeCab.Tagger(mecaboption)
+Return `(surface, coarse_pos)` pairs.
 
-print(tokenizer.parse(jamo))
+- Surface is returned in **Jamo surface form**
+- POS corresponds to the first feature field
+
+---
+
+### `pos_tag(text)`
+Return a list of `(token, POS)` tuples.
+
+- Uses HanDic base forms(Unified Hangul Code) when available
+- Falls back to surface forms for unknown words
+- POS tags are based on the Sejong tag set(see https://docs.komoran.kr/firststep/postypes.html)
+
+The following is an example for comparing `pos()` and `pos_tag()`.
+
+```python
+text = "말씀하시였다."
+
+nkhandic.pos(text)
+# [('말씀', 'Noun'), ('하', 'Suffix'), ('시여', 'Prefinal'), ('ᆻ', 'Prefinal'), ('다', 'Ending'), ('.', 'Symbol')]
+
+nkhandic.pos_tag(text)
+# [('말씀', 'NNG'), ('하다02', 'XSV'), ('시', 'EP'), ('ㅆ', 'EP'), ('다06', 'EF'), ('.', 'SF')]
 ```
 
-result:
+---
 
-```Shell
-경애 하 는 총비서 동지 에 대하 ㄴ 절대 적 이 ㄴ 충성심 을 지니 고 당중앙 의 구상 과 결심 을 철저 하 ㄴ 실천 행동 으로 받들어 나가 야 하 ㄴ다 .
+### `parse(text)`
+
+Return raw MeCab output string.
+
+- Includes all feature fields
+- Intended for advanced use
+
+```python
+print(nkhandic.parse("이제 우리앞에는 5개년계획기간이 2년 남아있다."))
 ```
+
+output:
+
+```Text
+이제	Adverb,一般,*,*,*,이제01,이제,*,*,A,MAG
+우리	Noun,代名詞,*,*,*,우리03,우리,*,*,A,NP
+앞	Noun,普通,*,*,*,앞,앞,*,*,A,NNG
+에	Ending,助詞,処格,*,*,에04,에,*,*,*,JKB
+는	Ending,助詞,題目,*,*,는01,는,*,*,*,JX
+5	Symbol,数字,*,*,*,*,*,*,*,*,SN
+개년	Noun,依存名詞,助数詞,*,*,개년03,개년,個年,*,*,NNB
+계획	Noun,普通,動作,*,*,계획01,계획,計劃,*,A,NNG
+기간	Noun,普通,*,*,*,기간07,기간,期間,*,B,NNG
+이	Ending,助詞,主格,*,*,이25,이,*,*,*,JKS
+2	Symbol,数字,*,*,*,*,*,*,*,*,SN
+년	Noun,依存名詞,助数詞,*,*,년02,년,年,*,A,NNB
+남아	Verb,自立,*,語基3,*,남다01,남아,*,*,B,VV
+있	Verb,非自立,*,語基1,3接続,있다01,있,*,*,A,VX
+다	Ending,語尾,終止形,*,1接続,다06,다,*,*,*,EF
+.	Symbol,ピリオド,*,*,*,.,.,*,*,*,SF
+EOS
+```
+
+---
+
+### `convert_text_to_hanja_hangul(text)`
+Convert text into **mixed Hanja + Hangul** representation.
+
+- Uses HanDic feature field (index 7)
+- Preserves whitespace and punctuation
+- Converts remaining Jamo into complete Hangul syllables
+
+> ⚠️ **Caution**  
+> 
+> It may be possible to misidentifying homonyms. e.g. 자신: 自信/自身
+
+---
+
+## Platform compatibility (important update)
+
+Recent versions of `nkhandic` include a **more robust MeCab initialization layer** to improve cross‑platform compatibility.
+
+Earlier versions could fail on **Windows or Conda environments** due to platform-specific path handling issues.
+
+Typical errors included:
+
+```
+[ifs] no such file or directory: /dev/null
+```
+
+or failures caused by Windows path escaping when dictionary paths contained spaces.
+
+### Improvements
+
+The initialization logic now:
+
+- Uses **`os.devnull` instead of `/dev/null`**
+- Automatically **quotes dictionary paths**
+- Normalizes Windows paths to **forward-slash format**
+- Improves MeCab argument handling
+
+These changes make the package more reliable on:
+
+- Windows 10 / 11
+- Miniconda / Anaconda environments
+- Python installations where the dictionary path contains spaces
+
+Most users **do not need to change their code**.
+
+---
+
+## Low-level access (for compatibility)
+
+```python
+import handic
+
+print(nkhandic.DICDIR)   # path to bundled NK-HanDic snapshot
+print(nkhandic.VERSION)  # NK-HanDic dictionary version
+```
+
+These are provided mainly for **backward compatibility** and inspection.
+
+---
+
+## Typical use cases
+
+- Using HanDic conveniently from Python
+- North Korean corpus analysis and language education research
+- Preprocessing North Korean text for NLP pipelines
+- Exploring Hangul / Hanja correspondences in North Korean
+
+---
 
 ## Features
 
-Here is the list of features included in NK-HanDic. For more information, see the [NK-HanDic 품사 정보](https://github.com/okikirmui/nkhandic/blob/main/docs/pos_detail.md).
+Here is the list of features included in NK-HanDic. For more information, see the [HanDic 품사 정보](https://github.com/okikirmui/handic/blob/main/docs/pos_detail.md).
 
   - 품사1, 품사2, 품사3: part of speech(index: 0-2)
   - 활용형: conjugation "base"(ex. `語基1`, `語基2`, `語基3`)(index: 3)
@@ -146,12 +268,29 @@ Here is the list of features included in NK-HanDic. For more information, see th
   - 보충 정보: miscellaneous informations(index: 8)
   - 학습 수준: learning level(index: 9)
   - 세종계획 품사 태그: pos-tag(index: 10)
-  - 조선어 표시(optional): for North Korean words(index: 11)
-  - 뜻풀이(optional): for North Korean words(index: 12)
+  - 조선어 표시: North Korean marker(index: 11)
+  - 조선어 보충 정보: misc. informations about North Korean(index: 12)
+
+---
+
+## Citation
+
+When citing **dictionary content**, please cite the NK-HanDic project:
+
+```
+NK-HanDic: morphological analysis dictionary for North Korean
+https://github.com/okikirmui/nkhandic
+```
+
+When citing **this Python package**, please cite both the package and NK-HanDic.
+
+---
 
 ## License
 
 This code is licensed under the MIT license. NK-HanDic is copyright Yoshinori Sugai and distributed under the [BSD license](./LICENSE.nkhandic). 
+
+---
 
 ## Acknowledgment
 
