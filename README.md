@@ -120,6 +120,28 @@ nkhandic.tokenize(text)
 # ['어쩌면', '그리도', '위대', '하', '시', 'ᆫ가', '.']
 ```
 
+#### `tokenize()` vs `tokenize_hangul()`
+
+- `tokenize()` returns **raw surface strings in Jamo form** from MeCab output.
+- `tokenize_hangul(mode="surface")` returns **surface forms in composed Hangul** using the feature fields (7th feature).
+
+In short, `tokenize()` preserves the original Jamo sequence, while `tokenize_hangul()` provides normalized Hangul strings.
+
+##### Example
+
+```python
+# Jamo strings are longer because each Hangul syllable is decomposed
+input = '말씀하시였다.'
+
+for item in nkhandic.tokenize(input):
+    print(f"{item} : {len(item)}")
+# -> 말씀:6, 하:2, 시여:4, ᆻ:1, 다:2, .:1
+
+for item in nkhandic.tokenize_hangul(input, mode="surface"):
+    print(f"{item} : {len(item)}")
+# -> 말씀:2, 하:1, 시여:2, ᆻ:1, 다:1, .:1
+```
+
 ---
 
 ### `pos(text)` — lightweight POS
