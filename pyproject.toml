@@ -10,7 +10,7 @@ authors = [
     {name="Yoshinori Sugai"},
     {email="okikirmui+github@gmail.com"}
 ]
-description = "NK-HanDic package for installing via pip."
+description = "Python wrapper for the NK-HanDic MeCab dictionary."
 readme = "README.md"
 license = {text = "MIT License"}
 keywords = [

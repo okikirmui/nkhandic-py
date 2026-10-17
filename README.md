@@ -2,6 +2,15 @@
 
 ![PyPI - Version](https://img.shields.io/pypi/v/nkhandic)
 
+> **Maintenance notice**
+>
+> `nkhandic` is maintained primarily for backward compatibility.
+> For new projects, using the [`handic`](https://pypi.org/project/handic/)
+> package with an external NK-HanDic dictionary via the `dicdir` argument
+> is recommended.
+>
+> The NK-HanDic dictionary itself continues to be developed separately at:
+> https://github.com/okikirmui/nkhandic
 
 👉 **NK-HanDic (dictionary) repository**: https://github.com/okikirmui/nkhandic
 
@@ -9,7 +18,7 @@
 
 > ⚠️ Important distinction  
 > - **NK-HanDic** = the MeCab dictionary itself (linguistic resource)  
-> - **nkhandic (this package)** = a Python interface / utility layer for HanDic  
+> - **nkhandic (this package)** = a Python interface / utility layer for NK-HanDic  
 >  
 > The dictionary is developed and published separately;  
 > this package focuses on *Python usability*.
@@ -78,6 +87,33 @@ print(nkhandic.convert_text_to_hanja_hangul(text))
 ['총비서', '동지', '께서', '다음', '과', '같이', '말씀', '하', '시여', 'ㅆ', '다', '.']
 總秘書同志께서 다음과 같이 말씀하시였다.
 ```
+
+---
+
+## Recommended usage for new projects
+
+For new projects, install `handic` and use a separately installed
+NK-HanDic dictionary.
+
+```bash
+pip install handic mecab-python3 jamotools
+```
+
+```python
+import nkhandic
+
+text = "총비서동지께서 다음과 같이 말씀하시였다."
+
+result = handic.pos_tag(
+    text,
+    dicdir="/path/to/NK-HanDic"
+)
+
+print(result)
+```
+The directory specified by `dicdir` must be a compiled MeCab dictionary directory.
+
+`handic` does not download or manage NK-HanDic. Dictionary installation and version management remain under the user's control.
 
 ---
 
@@ -258,7 +294,7 @@ Most users **do not need to change their code**.
 ## Low-level access (for compatibility)
 
 ```python
-import handic
+import nkhandic
 
 print(nkhandic.DICDIR)   # path to bundled NK-HanDic snapshot
 print(nkhandic.VERSION)  # NK-HanDic dictionary version
@@ -270,7 +306,7 @@ These are provided mainly for **backward compatibility** and inspection.
 
 ## Typical use cases
 
-- Using HanDic conveniently from Python
+- Using NK-HanDic conveniently from Python
 - North Korean corpus analysis and language education research
 - Preprocessing North Korean text for NLP pipelines
 - Exploring Hangul / Hanja correspondences in North Korean
